@@ -19,22 +19,28 @@ A full-stack web application for managing employees and their tasks, built with 
 - **Responsive Design**: Clean and modern UI
 
 ## 🏗️ Project Structure
+```
 employee-task-manager/
-├── backend/ # Spring Boot Application
-│ ├── src/main/java/com/prou/taskmanager/
-│ │ ├── controller/ # REST Controllers
-│ │ ├── model/ # JPA Entities
-│ │ ├── repository/ # Spring Data JPA
-│ │ ├── service/ # Business Logic
-│ │ └── config/ # Configuration
-│ └── pom.xml
-├── frontend/ # React Application
-│ ├── src/
-│ │ ├── components/ # React Components
-│ │ ├── App.js # Main App Component
-│ │ └── App.css # Styles
-│ └── package.json
+│
+├── backend/                    # Spring Boot Application
+│   ├── src/main/java/com/prou/taskmanager/
+│   │   ├── controller/         # REST Controllers
+│   │   ├── model/              # JPA Entities
+│   │   ├── repository/         # Spring Data JPA
+│   │   ├── service/            # Business Logic
+│   │   └── config/             # Configuration
+│   └── pom.xml
+│
+├── frontend/                   # React Application
+│   ├── src/
+│   │   ├── components/         # React Components
+│   │   ├── App.js              # Main App Component
+│   │   └── App.css             # Styles
+│   └── package.json
+│
 └── README.md
+```
+
 
 
 ## 🛠️ Setup & Installation
