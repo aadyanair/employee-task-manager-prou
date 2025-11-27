@@ -159,6 +159,5 @@ employee-task-manager/
 
 
 # 👤 Developer
-
-#### Aadya Nair
-##### ProU Technology Assessment - Track 3 (Full-stack Development)
+## Aadya Nair
+#### ProU Technology Assessment - Track 3 (Full-stack Development)
