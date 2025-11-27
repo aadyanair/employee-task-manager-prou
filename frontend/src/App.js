@@ -4,6 +4,9 @@ import EmployeeList from './components/EmployeeList';
 import EmployeeForm from './components/EmployeeForm';
 import TaskList from './components/TaskList';
 import TaskForm from './components/TaskForm';
+import Dashboard from './components/Dashboard';
+import TaskFilters from './components/TaskFilters';
+import Login from './components/Login';
 import './App.css';
 
 const API_BASE = 'http://localhost:8080/api';
@@ -13,13 +16,41 @@ function App() {
   const [tasks, setTasks] = useState([]);
   const [editingEmployee, setEditingEmployee] = useState(null);
   const [editingTask, setEditingTask] = useState(null);
-  const [activeTab, setActiveTab] = useState('employees');
+  const [activeTab, setActiveTab] = useState('dashboard');
+  const [taskFilters, setTaskFilters] = useState({
+    status: '',
+    assignedTo: '',
+    search: ''
+  });
+  const [user, setUser] = useState(null); // Authentication state
 
-  // Load data when component mounts
+  // Check for existing session on component mount
   useEffect(() => {
-    fetchEmployees();
-    fetchTasks();
+    const savedUser = localStorage.getItem('user');
+    if (savedUser) {
+      setUser(JSON.parse(savedUser));
+    }
   }, []);
+
+  // Load data when user is authenticated
+  useEffect(() => {
+    if (user) {
+      fetchEmployees();
+      fetchTasks();
+    }
+  }, [user]);
+
+  // Authentication function
+  const handleLogin = (username) => {
+    setUser({ username });
+    // Store in localStorage for persistence
+    localStorage.setItem('user', JSON.stringify({ username }));
+  };
+
+  const handleLogout = () => {
+    setUser(null);
+    localStorage.removeItem('user');
+  };
 
   // Employee functions
   const fetchEmployees = async () => {
@@ -60,7 +91,6 @@ function App() {
       try {
         await axios.delete(`${API_BASE}/employees/${id}`);
         setEmployees(employees.filter(emp => emp.id !== id));
-        // Also remove tasks assigned to this employee
         setTasks(tasks.filter(task => task.assignedEmployee?.id !== id));
       } catch (error) {
         console.error('Error deleting employee:', error);
@@ -115,17 +145,48 @@ function App() {
     }
   };
 
+  // Filter tasks
+  const getFilteredTasks = () => {
+    return tasks.filter(task => {
+      const matchesStatus = !taskFilters.status || task.status === taskFilters.status;
+      const matchesEmployee = !taskFilters.assignedTo || 
+        task.assignedEmployee?.id === parseInt(taskFilters.assignedTo);
+      const matchesSearch = !taskFilters.search || 
+        task.title.toLowerCase().includes(taskFilters.search.toLowerCase()) ||
+        task.description.toLowerCase().includes(taskFilters.search.toLowerCase());
+      
+      return matchesStatus && matchesEmployee && matchesSearch;
+    });
+  };
+
+  // If not authenticated, show login page
+  if (!user) {
+    return <Login onLogin={handleLogin} />;
+  }
+
   return (
     <div className="app">
       <header className="header">
-        <div className="container">
+        <div className="container header-content">
           <h1>Employee Task Manager</h1>
+          <div className="user-info">
+            <span>Welcome, {user.username}!</span>
+            <button onClick={handleLogout} className="btn btn-secondary btn-sm">
+              Logout
+            </button>
+          </div>
         </div>
       </header>
       
       <div className="container">
         {/* Navigation Tabs */}
-        <div className="tabs" style={{ marginBottom: '2rem' }}>
+        <div className="tabs">
+          <button 
+            className={`tab-btn ${activeTab === 'dashboard' ? 'active' : ''}`}
+            onClick={() => setActiveTab('dashboard')}
+          >
+            Dashboard
+          </button>
           <button 
             className={`tab-btn ${activeTab === 'employees' ? 'active' : ''}`}
             onClick={() => setActiveTab('employees')}
@@ -139,6 +200,10 @@ function App() {
             Tasks
           </button>
         </div>
+
+        {activeTab === 'dashboard' && (
+          <Dashboard employees={employees} tasks={tasks} />
+        )}
 
         {activeTab === 'employees' && (
           <div className="dashboard">
@@ -161,22 +226,30 @@ function App() {
         )}
 
         {activeTab === 'tasks' && (
-          <div className="dashboard">
-            <div>
-              <TaskForm
-                task={editingTask}
-                employees={employees}
-                onSubmit={editingTask ? handleUpdateTask : handleCreateTask}
-                onCancel={() => setEditingTask(null)}
-              />
-            </div>
+          <div>
+            <TaskFilters 
+              filters={taskFilters}
+              onFilterChange={setTaskFilters}
+              employees={employees}
+            />
             
-            <div>
-              <TaskList
-                tasks={tasks}
-                onEdit={setEditingTask}
-                onDelete={handleDeleteTask}
-              />
+            <div className="dashboard">
+              <div>
+                <TaskForm
+                  task={editingTask}
+                  employees={employees}
+                  onSubmit={editingTask ? handleUpdateTask : handleCreateTask}
+                  onCancel={() => setEditingTask(null)}
+                />
+              </div>
+              
+              <div>
+                <TaskList
+                  tasks={getFilteredTasks()}
+                  onEdit={setEditingTask}
+                  onDelete={handleDeleteTask}
+                />
+              </div>
             </div>
           </div>
         )}

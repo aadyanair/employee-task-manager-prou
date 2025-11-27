@@ -11,14 +11,28 @@ A full-stack web application for managing employees and their tasks, built with 
 
 ## 📋 Features
 
+### Core Features
 - **Employee Management**: Full CRUD operations for employees
 - **Task Management**: Full CRUD operations for tasks
 - **Task Assignment**: Assign tasks to specific employees
 - **Status Tracking**: Track task progress (To Do, In Progress, Completed)
-- **RESTful API**: Well-structured backend API
+
+### Advanced Features
+- **Dashboard**: Statistics and overview with completion rates
+- **Task Filtering**: Filter by status, assigned employee, and search
+- **Authentication**: Simple login system
 - **Responsive Design**: Clean and modern UI
 
+## 🎯 Bonus Features Implemented
+
+✅ **Dashboard with Statistics** - Overview with completion rates and employee rankings  
+✅ **Task Filtering and Search** - Filter by status, employee, and search tasks  
+✅ **Deployment Preparation** - Production-ready configuration  
+✅ **Authentication** - Simple login system  
+✅ **RESTful API** - Well-structured backend API  
+
 ## 🏗️ Project Structure
+```
 employee-task-manager/
 ├── backend/ # Spring Boot Application
 │ ├── src/main/java/com/prou/taskmanager/
@@ -31,11 +45,16 @@ employee-task-manager/
 ├── frontend/ # React Application
 │ ├── src/
 │ │ ├── components/ # React Components
-│ │ ├── App.js # Main App Component
-│ │ └── App.css # Styles
+│ │ │ ├── Dashboard.js
+│ │ │ ├── TaskFilters.js
+│ │ │ ├── Login.js
+│ │ │ └── ...
+│ │ ├── App.js
+│ │ └── App.css
 │ └── package.json
+├── DEPLOYMENT.md
 └── README.md
-
+```
 
 ## 🛠️ Setup & Installation
 
@@ -95,6 +114,37 @@ employee-task-manager/
 - Username: sa
 
 - Password: password
+
+### 🎨 Features Demo
+
+#### Dashboard
+
+- Real-time statistics
+
+- Completion rates
+
+- Top employees by task count
+
+- Task status breakdown
+
+
+#### Task Management
+
+- Advanced filtering by status and assignee
+
+- Search functionality
+
+- Status-based color coding
+
+- Due date tracking
+
+#### Authentication
+
+- Simple login system
+
+- Session persistence
+
+- User-friendly interface
 
 ## 🎯 Evaluation Criteria Covered
 - ✅ Code readability and structure
