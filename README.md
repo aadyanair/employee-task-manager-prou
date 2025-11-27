@@ -31,6 +31,13 @@ A full-stack web application for managing employees and their tasks, built with 
 ✅ **Authentication** - Simple login system  
 ✅ **RESTful API** - Well-structured backend API  
 
+
+## 🎥 Screen Recording
+
+[![Demo Video](https://img.youtube.com/vi/YOUR_VIDEO_ID/0.jpg)](https://youtu.be/5xS8bQ6mKRQ)
+
+*Click the image above to watch the application demo video*
+
 ## 🏗️ Project Structure
 ```
 employee-task-manager/
